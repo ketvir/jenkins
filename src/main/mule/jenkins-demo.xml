@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="35111ba4-476b-4336-8025-aecbcca1ddef" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<flow name="jenkins-demoFlow" doc:id="30666887-1da1-4b91-8122-507f2caeed05" >
+		<http:listener doc:name="Listener" doc:id="ffbc52e0-4387-4c3d-adbe-75769222c29e" config-ref="HTTP_Listener_config" path="/jenkins"/>
+		<logger level="INFO" doc:name="Logger" doc:id="2933c9d0-90bf-46d7-96d2-4befc685f514" message="#[payload]"/>
+		<ee:transform doc:name="Transform Message" doc:id="949edf72-7c39-4918-b7c2-3fd856af7a7b" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+[{
+    "fname" : "kethan",
+    "lname" : "patel"
+},
+{
+    "fname" : "hiren",
+    "lname" : "patel"
+}
+]]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>
